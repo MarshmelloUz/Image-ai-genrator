@@ -2,30 +2,114 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
-    <title>NovaUz Ai Image Generator</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+  <title>NovaUz AI Studio</title>
 </head>
 
 <body>
+  <main class="app-shell">
+    <header class="hero">
+      <h1>NovaUz AI Creator & Editor</h1>
+      <p>Create AI images, edit photos, build AI videos from generated frames, and apply quick AI-style edits to videos.</p>
+    </header>
 
-    <div class="container">
-        <h1>NovaUz Ai Image Generator</h1>
-        <p> Siz Uchun Maslaxatlar : 4k, fullhd , anime, cyberpunk .</p>
-        <form class="gen-form">
-            <input type="text" id="user-prompt" , placeholder="Bu Yerga Yozing..." autocomplete="off">
-            <button type="button" id="generate">Generate</button>
-        </form>
+    <section class="api-bar card">
+      <label for="api-key">Hugging Face API key</label>
+      <input id="api-key" type="password" placeholder="hf_..." autocomplete="off">
+      <small>Your key is only used in your browser session.</small>
+    </section>
 
-        <div class="result">
-            <div id="loading">Kutib Turing...</div>
-            <div id="image-grid"></div>
+    <section class="tabs">
+      <button class="tab-btn active" data-tab="image-create">Image Creator</button>
+      <button class="tab-btn" data-tab="image-edit">Image Editor</button>
+      <button class="tab-btn" data-tab="video-create">Video Creator</button>
+      <button class="tab-btn" data-tab="video-edit">Video Editor</button>
+    </section>
+
+    <section class="panel card active" id="image-create">
+      <h2>AI Image Creator</h2>
+      <div class="row">
+        <input id="image-prompt" type="text" placeholder="Prompt: cyberpunk samurai, volumetric lighting" autocomplete="off">
+        <button id="generate-images">Generate</button>
+      </div>
+      <div class="row">
+        <select id="image-style">
+          <option value="">No style boost</option>
+          <option value="cinematic, ultra detailed, 4k">Cinematic 4K</option>
+          <option value="anime style, vibrant colors">Anime</option>
+          <option value="isometric game art">Isometric</option>
+          <option value="photorealistic portrait">Photorealistic</option>
+        </select>
+        <input id="image-count" type="number" min="1" max="6" value="4">
+      </div>
+      <p id="image-status" class="status"></p>
+      <div id="image-grid" class="image-grid"></div>
+    </section>
+
+    <section class="panel card" id="image-edit">
+      <h2>AI Image Editor</h2>
+      <input id="image-upload" type="file" accept="image/*">
+      <div class="editor-layout">
+        <canvas id="image-canvas" width="640" height="360"></canvas>
+        <div class="controls">
+          <label>Brightness <input type="range" id="brightness" min="50" max="150" value="100"></label>
+          <label>Contrast <input type="range" id="contrast" min="50" max="150" value="100"></label>
+          <label>Saturation <input type="range" id="saturation" min="0" max="200" value="100"></label>
+          <label>Blur <input type="range" id="blur" min="0" max="8" value="0"></label>
+          <label><input type="checkbox" id="grayscale"> Grayscale</label>
+          <button id="download-image">Download Edited Image</button>
         </div>
+      </div>
+    </section>
 
-    </div>
+    <section class="panel card" id="video-create">
+      <h2>AI Video Creator</h2>
+      <div class="row">
+        <input id="video-prompt" type="text" placeholder="Prompt: flying over a neon city at night" autocomplete="off">
+        <button id="generate-video">Generate Video</button>
+      </div>
+      <div class="row">
+        <input id="video-frames" type="number" min="4" max="14" value="8">
+        <small>Frames (higher = slower but richer)</small>
+      </div>
+      <p id="video-status" class="status"></p>
+      <video id="created-video" controls></video>
+    </section>
 
-    <script src="script.js"></script>
+    <section class="panel card" id="video-edit">
+      <h2>AI Video Editor</h2>
+      <input id="video-upload" type="file" accept="video/*">
+      <div class="row">
+        <label>Filter
+          <select id="video-filter">
+            <option value="none">None</option>
+            <option value="cinematic">Cinematic</option>
+            <option value="bw">Black & White</option>
+            <option value="vivid">Vivid</option>
+          </select>
+        </label>
+        <label>Speed
+          <select id="video-speed">
+            <option value="0.75">0.75x</option>
+            <option value="1" selected>1x</option>
+            <option value="1.25">1.25x</option>
+            <option value="1.5">1.5x</option>
+          </select>
+        </label>
+      </div>
+      <div class="row">
+        <label>Start (s) <input id="trim-start" type="number" min="0" value="0"></label>
+        <label>End (s) <input id="trim-end" type="number" min="1" value="6"></label>
+        <button id="export-video">Export Edited Clip</button>
+      </div>
+      <p id="edit-status" class="status"></p>
+      <video id="video-preview" controls></video>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
 </body>
 
 </html>
